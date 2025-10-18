@@ -1,0 +1,42 @@
+<div class="area-shell">
+  <aside class="area-shell__sidebar" *ngIf="links.length">
+    <div class="area-shell__sidebar-header">
+      <h2 class="area-shell__title">{{ title }}</h2>
+      <p class="area-shell__subtitle" *ngIf="subtitle">{{ subtitle }}</p>
+    </div>
+    <nav class="area-shell__nav">
+      <a
+        *ngFor="let link of links; trackBy: trackLink"
+        [routerLink]="link.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
+      >
+        <span class="area-shell__nav-label">{{ link.label }}</span>
+        <small class="area-shell__nav-description" *ngIf="link.description">{{ link.description }}</small>
+      </a>
+    </nav>
+  </aside>
+
+  <div class="area-shell__workspace">
+    <header class="area-shell__topbar">
+      <div class="area-shell__context">
+        <span class="area-shell__context-title">{{ title }}</span>
+        <span class="area-shell__context-subtitle" *ngIf="subtitle">{{ subtitle }}</span>
+      </div>
+      <div class="area-shell__topbar-actions">
+        <ng-content select="[shell-actions]"></ng-content>
+        <ng-container *ngIf="authState$ | async as auth">
+          <span class="area-shell__identity" *ngIf="auth.username || auth.role">
+            <span class="area-shell__user" *ngIf="auth.username">{{ auth.username }}</span>
+            <span class="area-shell__role" *ngIf="auth.role">{{ roleLabel(auth.role) }}</span>
+          </span>
+          <button type="button" class="area-shell__logout" (click)="logout()">Logout</button>
+        </ng-container>
+      </div>
+    </header>
+
+    <section class="area-shell__content">
+      <router-outlet></router-outlet>
+    </section>
+  </div>
+</div>
