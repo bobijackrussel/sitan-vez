@@ -1,0 +1,24 @@
+﻿<section class="admin-dictionary">
+  <header>
+    <h1>Categories</h1>
+    <p>Maintain garment categories.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>
+      <span>Category name</span>
+      <input formControlName="naziv" placeholder="Category">
+      <app-form-field-error [control]="form.get('naziv')"></app-form-field-error>
+    </label>
+    <button type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Add category' }}</button>
+  </form>
+
+  <div *ngIf="loading">Loading categories...</div>
+  <ul *ngIf="!loading && categories.length > 0">
+    <li *ngFor="let category of categories">
+      {{ category.naziv }}
+      <button type="button" (click)="remove(category)">Remove</button>
+    </li>
+  </ul>
+  <p *ngIf="!loading && categories.length === 0">No categories recorded.</p>
+</section>

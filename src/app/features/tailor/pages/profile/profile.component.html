@@ -1,0 +1,91 @@
+<section class="tailor-profile">
+  <header>
+    <h1>Tailor profile</h1>
+    <p>Manage your operating countries and map offers to specific markets.</p>
+  </header>
+
+  <section class="profile-summary">
+    <h2>Account</h2>
+    <dl>
+      <div>
+        <dt>Username</dt>
+        <dd>{{ username }}</dd>
+      </div>
+      <div>
+        <dt>Role</dt>
+        <dd>Tailor</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="countries">
+    <h2>Operating countries</h2>
+    <form [formGroup]="countryForm" (ngSubmit)="saveCountry()">
+      <label>
+        <span>Country</span>
+        <select formControlName="drzavaNaziv">
+          <option value="">Select country</option>
+          <option *ngFor="let country of availableCountries" [value]="country">{{ country }}</option>
+        </select>
+        <app-form-field-error [control]="countryForm.get('drzavaNaziv')"></app-form-field-error>
+      </label>
+      <label>
+        <span>Shipping price (?)</span>
+        <input type="number" formControlName="cijenaPostarine" min="0" step="0.01">
+        <app-form-field-error [control]="countryForm.get('cijenaPostarine')"></app-form-field-error>
+      </label>
+      <button type="submit" [disabled]="savingCountry">{{ savingCountry ? 'Saving...' : 'Add country' }}</button>
+    </form>
+
+    <div *ngIf="loadingCountries">Loading countries...</div>
+    <table *ngIf="!loadingCountries && tailorCountries.length > 0">
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Shipping</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let country of tailorCountries">
+          <td>{{ country.drzavaNaziv }}</td>
+          <td>{{ country.cijenaPostarine | number:'1.2-2' }} ?</td>
+          <td><button type="button" (click)="removeCountry(country)">Remove</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="!loadingCountries && tailorCountries.length === 0">No operating countries yet.</p>
+  </section>
+
+  <section class="mappings">
+    <h2>Offer availability</h2>
+    <form [formGroup]="mappingForm" (ngSubmit)="saveMapping()">
+      <label>
+        <span>Country</span>
+        <select formControlName="drzavaNaziv">
+          <option value="">Select country</option>
+          <option *ngFor="let country of tailorCountries" [value]="country.drzavaNaziv">{{ country.drzavaNaziv }}</option>
+        </select>
+        <app-form-field-error [control]="mappingForm.get('drzavaNaziv')"></app-form-field-error>
+      </label>
+      <label>
+        <span>Offer</span>
+        <select formControlName="ponudaId">
+          <option value="">Select offer</option>
+          <option *ngFor="let offer of offers" [value]="offer.id">{{ offer.uslugaNaziv || offer.artikal?.naziv || 'Offer ' + offer.id }}</option>
+        </select>
+        <app-form-field-error [control]="mappingForm.get('ponudaId')"></app-form-field-error>
+      </label>
+      <button type="submit" [disabled]="savingMapping">{{ savingMapping ? 'Saving...' : 'Add mapping' }}</button>
+    </form>
+
+    <div *ngIf="loadingMappings">Loading mappings...</div>
+    <ul *ngIf="!loadingMappings && countryMappings.length > 0">
+      <li *ngFor="let mapping of countryMappings">
+        {{ mapping.drzavaNaziv }} ? offer #{{ mapping.ponudaId }}
+        <button type="button" (click)="removeMapping(mapping)">Remove</button>
+      </li>
+    </ul>
+    <p *ngIf="!loadingMappings && countryMappings.length === 0">No mappings defined.</p>
+  </section>
+</section>

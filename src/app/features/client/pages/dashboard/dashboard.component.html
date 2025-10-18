@@ -1,0 +1,76 @@
+<section class="dashboard">
+  <header>
+    <h1>Welcome back</h1>
+    <p>Start a new commission or track ongoing orders.</p>
+    <div class="cta-row">
+      <button type="button" (click)="startNewOrder()">Start new order</button>
+      <button type="button" class="secondary" (click)="browseOffers()">Browse offers</button>
+      <button type="button" class="secondary" (click)="viewMeasurements()">Measurements</button>
+    </div>
+  </header>
+
+  <section class="dashboard-section">
+    <h2>Latest measurements</h2>
+    <div *ngIf="measurementsLoading">Loading measurements...</div>
+    <ng-container *ngIf="!measurementsLoading">
+      <ng-container *ngIf="latestMeasurement as measurement; else noMeasurements">
+        <dl>
+          <div>
+            <dt>Date</dt>
+            <dd>{{ measurement.datum || 'N/A' }}</dd>
+          </div>
+          <div>
+            <dt>Chest</dt>
+            <dd>{{ measurement.obimGrudi || 'N/A' }} cm</dd>
+          </div>
+          <div>
+            <dt>Waist</dt>
+            <dd>{{ measurement.obimStruka || 'N/A' }} cm</dd>
+          </div>
+          <div>
+            <dt>Hips</dt>
+            <dd>{{ measurement.obimBokova || 'N/A' }} cm</dd>
+          </div>
+          <div>
+            <dt>Shoulders</dt>
+            <dd>{{ measurement.sirinaRamena || 'N/A' }} cm</dd>
+          </div>
+          <div>
+            <dt>Length</dt>
+            <dd>{{ measurement.duzina || 'N/A' }} cm</dd>
+          </div>
+        </dl>
+      </ng-container>
+      <ng-template #noMeasurements>
+        <p>No measurements yet. Capture your first snapshot to help tailors fit perfectly.</p>
+      </ng-template>
+    </ng-container>
+  </section>
+
+  <section class="dashboard-section">
+    <h2>Recent orders</h2>
+    <div *ngIf="ordersLoading">Loading orders...</div>
+    <ul *ngIf="!ordersLoading && recentOrders.length > 0">
+      <li *ngFor="let order of recentOrders; trackBy: trackOrder">
+        <h3>Order #{{ order.id }}</h3>
+        <p>Status: {{ order.statusNarudzbeNaziv }}</p>
+        <p>Due: {{ order.rokZaIzradu || 'N/A' }}</p>
+        <button type="button" (click)="openOrder(order)">View details</button>
+      </li>
+    </ul>
+    <p *ngIf="!ordersLoading && recentOrders.length === 0">You have no orders yet.</p>
+  </section>
+
+  <section class="dashboard-section">
+    <h2>Suggested offers</h2>
+    <div *ngIf="offersLoading">Loading offers...</div>
+    <div *ngIf="!offersLoading && suggestedOffers.length > 0">
+      <article *ngFor="let offer of suggestedOffers; trackBy: trackOffer">
+        <h3>{{ offer.uslugaNaziv || offer?.artikal?.naziv || 'Tailor offer' }}</h3>
+        <p *ngIf="offer.jedinicnaCijena">From {{ offer.jedinicnaCijena | currency:'EUR':'symbol':'1.0-0' }}</p>
+        <p>Lead time: {{ offer?.brojDanaZaIzradu || 'N/A' }} days</p>
+      </article>
+    </div>
+    <p *ngIf="!offersLoading && suggestedOffers.length === 0">No suggestions at the moment. Try exploring the marketplace.</p>
+  </section>
+</section>

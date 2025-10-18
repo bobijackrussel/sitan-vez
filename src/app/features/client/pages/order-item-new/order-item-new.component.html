@@ -1,0 +1,48 @@
+<section class="order-item-new">
+  <header>
+    <h1>Add item to order</h1>
+    <p>Select an offer, choose measurements, and include optional add-ons.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      <span>Offer</span>
+      <select formControlName="offerId">
+        <option value="">Select an offer</option>
+        <option *ngFor="let offer of offers" [value]="offer.id">{{ offerLabel(offer) }}</option>
+      </select>
+      <app-form-field-error [control]="form.get('offerId')"></app-form-field-error>
+      <small *ngIf="loadingOffers">Loading offers...</small>
+    </label>
+
+    <label>
+      <span>Measurement snapshot</span>
+      <select formControlName="measurementId">
+        <option value="">Select measurements</option>
+        <option *ngFor="let snapshot of measurements" [value]="snapshot.id">{{ measurementLabel(snapshot) }}</option>
+      </select>
+      <app-form-field-error [control]="form.get('measurementId')"></app-form-field-error>
+      <small *ngIf="loadingMeasurements">Loading measurements...</small>
+      <p *ngIf="!loadingMeasurements && measurements.length === 0">No measurements found. Capture one before adding an item.</p>
+    </label>
+
+    <label>
+      <span>Quantity</span>
+      <input type="number" formControlName="quantity" min="1">
+      <app-form-field-error [control]="form.get('quantity')"></app-form-field-error>
+    </label>
+
+    <section *ngIf="addons.length > 0">
+      <h2>Add-ons</h2>
+      <p *ngIf="loadingAddons">Loading add-ons...</p>
+      <div *ngFor="let addon of addons">
+        <label>
+          <input type="checkbox" (change)="toggleAddon(addon.id, $any($event.target).checked)">
+          {{ addon.naziv }} <span *ngIf="addon.cijena">({{ addon.cijena | currency:'EUR':'symbol':'1.0-0' }})</span>
+        </label>
+      </div>
+    </section>
+
+    <button type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Add item' }}</button>
+  </form>
+</section>

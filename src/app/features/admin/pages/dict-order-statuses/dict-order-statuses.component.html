@@ -1,0 +1,24 @@
+﻿<section class="admin-dictionary">
+  <header>
+    <h1>Order statuses</h1>
+    <p>Maintain allowed order status values.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>
+      <span>Status name</span>
+      <input formControlName="naziv" placeholder="Status">
+      <app-form-field-error [control]="form.get('naziv')"></app-form-field-error>
+    </label>
+    <button type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Add order status' }}</button>
+  </form>
+
+  <div *ngIf="loading">Loading order statuses...</div>
+  <ul *ngIf="!loading && orderStatuses.length > 0">
+    <li *ngFor="let status of orderStatuses">
+      {{ status.naziv }}
+      <button type="button" (click)="remove(status)">Remove</button>
+    </li>
+  </ul>
+  <p *ngIf="!loading && orderStatuses.length === 0">No order statuses recorded.</p>
+</section>

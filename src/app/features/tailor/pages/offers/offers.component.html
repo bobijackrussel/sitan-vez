@@ -1,0 +1,64 @@
+<section class="tailor-offers">
+  <header>
+    <h1>Offers</h1>
+    <p>Publish services and garments for clients to order.</p>
+  </header>
+
+  <section class="create-offer">
+    <h2>New service offer</h2>
+    <form [formGroup]="serviceForm" (ngSubmit)="saveServiceOffer()">
+      <label>
+        <span>Service</span>
+        <select formControlName="uslugaNaziv">
+          <option value="">Select service</option>
+          <option *ngFor="let service of services" [value]="service.naziv">{{ service.naziv }}</option>
+        </select>
+        <app-form-field-error [control]="serviceForm.get('uslugaNaziv')"></app-form-field-error>
+      </label>
+      <label>
+        <span>Price (€)</span>
+        <input type="number" formControlName="jedinicnaCijena" min="0" step="0.01">
+        <app-form-field-error [control]="serviceForm.get('jedinicnaCijena')"></app-form-field-error>
+      </label>
+      <label>
+        <span>Discount %</span>
+        <input type="number" formControlName="procenatPopusta" min="0" max="100">
+      </label>
+      <label>
+        <span>Rush surcharge %</span>
+        <input type="number" formControlName="procenatZaHitnost" min="0" max="100">
+      </label>
+      <button type="submit" [disabled]="creating">{{ creating ? 'Creating...' : 'Publish offer' }}</button>
+    </form>
+  </section>
+
+  <section class="offers-list">
+    <h2>Your offers</h2>
+    <div *ngIf="loading">Loading offers...</div>
+    <table *ngIf="!loading && offers.length > 0">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Price</th>
+          <th>Discount</th>
+          <th>Rush fee</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let offer of offers">
+          <td>{{ offer.uslugaNaziv || offer.artikal?.naziv }}</td>
+          <td>{{ offer.jedinicnaCijena | currency:'EUR':'symbol':'1.0-0' }}</td>
+          <td>{{ offer.procenatPopusta || 0 }}%</td>
+          <td>{{ offer.procenatZaHitnost || 0 }}%</td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="!loading && offers.length === 0">No offers yet.</p>
+
+    <nav class="pagination" *ngIf="page.totalPages > 1">
+      <button type="button" (click)="previousPage()" [disabled]="page.number === 0">Previous</button>
+      <span>Page {{ page.number + 1 }} of {{ page.totalPages }}</span>
+      <button type="button" (click)="nextPage()" [disabled]="page.number + 1 >= page.totalPages">Next</button>
+    </nav>
+  </section>
+</section>

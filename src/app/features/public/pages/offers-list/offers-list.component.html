@@ -1,0 +1,119 @@
+<section class="offers">
+  <header class="offers__header">
+    <h1>Marketplace offers</h1>
+    <p>Filter by service, country, or garment details to find the perfect tailor collaboration.</p>
+  </header>
+
+  <form class="filters" [formGroup]="filtersForm" (ngSubmit)="applyFilters()">
+    <div class="filters__grid">
+      <label>
+        <span>Search</span>
+        <input type="search" formControlName="search" placeholder="Article or service name">
+      </label>
+
+      <label>
+        <span>Service</span>
+        <select formControlName="service">
+          <option value="">All services</option>
+          <option *ngFor="let service of services" [value]="service">{{ service }}</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Country</span>
+        <select formControlName="country">
+          <option value="">All countries</option>
+          <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Category</span>
+        <select formControlName="category">
+          <option value="">All categories</option>
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Subcategory</span>
+        <select formControlName="subcategory">
+          <option value="">All subcategories</option>
+          <option *ngFor="let subcategory of subcategories" [value]="subcategory">{{ subcategory }}</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Min price (EUR)</span>
+        <input type="number" min="0" formControlName="minPrice" placeholder="0">
+      </label>
+
+      <label>
+        <span>Max price (EUR)</span>
+        <input type="number" min="0" formControlName="maxPrice" placeholder="500">
+      </label>
+    </div>
+
+    <div class="filters__actions">
+      <button type="submit" [disabled]="loading">Apply</button>
+      <button type="button" class="secondary" (click)="resetFilters()" [disabled]="loading">Reset</button>
+    </div>
+  </form>
+
+  <div class="status" *ngIf="loading">Loading offers...</div>
+  <p class="error" *ngIf="!loading && error">{{ error }}</p>
+
+  <div class="offer-grid" *ngIf="!loading">
+    <article class="offer-card" *ngFor="let offer of offers; trackBy: trackByOffer" (click)="openOffer(offer)">
+      <header>
+        <h2>{{ displayTitle(offer) }}</h2>
+        <p class="subtitle">{{ displaySubtitle(offer) }}</p>
+      </header>
+      <dl>
+        <div>
+          <dt>Price</dt>
+          <dd>
+            <ng-container *ngIf="priceValue(offer) as price; else priceNA">
+              {{ price | currency:'EUR':'symbol':'1.0-0' }}
+            </ng-container>
+            <ng-template #priceNA>N/A</ng-template>
+          </dd>
+        </div>
+        <div>
+          <dt>Tailor</dt>
+          <dd>{{ tailorName(offer) }}</dd>
+        </div>
+        <div>
+          <dt>Lead time</dt>
+          <dd>
+            <ng-container *ngIf="leadTime(offer) as leadDays; else leadNA">
+              {{ leadDays }} days
+            </ng-container>
+          </dd>
+        </div>
+        <div>
+          <dt>Cancel window</dt>
+          <dd>
+            <ng-container *ngIf="cancelWindow(offer) as cancelDays; else cancelNA">
+              {{ cancelDays }} days
+            </ng-container>
+          </dd>
+        </div>
+        <ng-template #leadNA>N/A</ng-template>
+        <ng-template #cancelNA>N/A</ng-template>
+      </dl>
+      <footer>
+        <span class="badge" *ngIf="hasDiscount(offer)">Save {{ offer.procenatPopusta }}%</span>
+        <span class="badge outline" *ngIf="hasRushFee(offer)">Rush +{{ offer.procenatZaHitnost }}%</span>
+      </footer>
+    </article>
+
+    <p class="empty" *ngIf="offers.length === 0 && !error">No offers match the filters right now.</p>
+  </div>
+
+  <nav class="pagination" *ngIf="page.totalPages > 1">
+    <button type="button" (click)="previousPage()" [disabled]="page.number === 0">Previous</button>
+    <span>Page {{ page.number + 1 }} of {{ page.totalPages }}</span>
+    <button type="button" (click)="nextPage()" [disabled]="page.number + 1 >= page.totalPages">Next</button>
+  </nav>
+</section>

@@ -1,0 +1,72 @@
+﻿<section class="tailor-assets">
+  <header>
+    <h1>Patterns & creations</h1>
+    <p>Upload reference patterns and showcase completed garments.</p>
+  </header>
+
+  <section class="patterns">
+    <h2>Patterns</h2>
+    <form [formGroup]="patternForm" (ngSubmit)="savePattern()">
+      <label>
+        <span>Article</span>
+        <select formControlName="artikalId">
+          <option value="">Select article</option>
+          <option *ngFor="let article of articles" [value]="article.id">{{ article.naziv }}</option>
+        </select>
+        <app-form-field-error [control]="patternForm.get('artikalId')"></app-form-field-error>
+      </label>
+      <label>
+        <span>Price (â‚¬)</span>
+        <input type="number" formControlName="cijena" min="0" step="0.01">
+        <app-form-field-error [control]="patternForm.get('cijena')"></app-form-field-error>
+      </label>
+      <label class="full">
+        <span>Image (base64)</span>
+        <textarea formControlName="slikaBase64" rows="3"></textarea>
+        <app-form-field-error [control]="patternForm.get('slikaBase64')"></app-form-field-error>
+      </label>
+      <button type="submit" [disabled]="savingPattern">{{ savingPattern ? 'Saving...' : 'Add pattern' }}</button>
+    </form>
+
+    <div *ngIf="loadingPatterns">Loading patterns...</div>
+    <ul *ngIf="!loadingPatterns && patterns.length > 0">
+      <li *ngFor="let pattern of patterns">
+        <strong>Pattern #{{ pattern.id }}</strong>
+        <span>Article {{ pattern.artikalId }}</span>
+        <span>{{ pattern.cijena | currency:'EUR':'symbol':'1.0-0' }}</span>
+        <button type="button" (click)="removePattern(pattern)">Delete</button>
+      </li>
+    </ul>
+    <p *ngIf="!loadingPatterns && patterns.length === 0">No patterns uploaded.</p>
+  </section>
+
+  <section class="creations">
+    <h2>Creations</h2>
+    <form [formGroup]="creationForm" (ngSubmit)="saveCreation()">
+      <label>
+        <span>Client</span>
+        <select formControlName="klijentId">
+          <option value="">Select client</option>
+          <option *ngFor="let client of clients" [value]="client.id">{{ client.ime || client.korisnickoIme }} {{ client.prezime || "" }}</option>
+        </select>
+        <app-form-field-error [control]="creationForm.get('klijentId')"></app-form-field-error>
+      </label>
+      <label class="full">
+        <span>Image (base64)</span>
+        <textarea formControlName="slikaBase64" rows="3"></textarea>
+        <app-form-field-error [control]="creationForm.get('slikaBase64')"></app-form-field-error>
+      </label>
+      <button type="submit" [disabled]="savingCreation">{{ savingCreation ? 'Saving...' : 'Add creation' }}</button>
+    </form>
+
+    <div *ngIf="loadingCreations">Loading creations...</div>
+    <ul *ngIf="!loadingCreations && creations.length > 0">
+      <li *ngFor="let creation of creations">
+        <strong>Creation #{{ creation.id }}</strong>
+        <span>Client {{ creation.klijentId }}</span>
+        <button type="button" (click)="removeCreation(creation)">Delete</button>
+      </li>
+    </ul>
+    <p *ngIf="!loadingCreations && creations.length === 0">No creations uploaded.</p>
+  </section>
+</section>

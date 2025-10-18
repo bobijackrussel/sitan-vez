@@ -1,0 +1,42 @@
+<section class="admin-dashboard" *ngIf="!loading; else loadingState">
+  <header>
+    <h1>Admin dashboard</h1>
+    <p>Overview of clients, offers, and orders across the platform.</p>
+  </header>
+
+  <section class="metrics">
+    <article *ngFor="let metric of metrics">
+      <h2>{{ metric.label }}</h2>
+      <p class="value">{{ metric.value }}</p>
+      <small *ngIf="metric.hint">{{ metric.hint }}</small>
+    </article>
+  </section>
+
+  <section class="recent">
+    <div>
+      <h2>Latest offers</h2>
+      <p *ngIf="recentOffers.length === 0">No offers published recently.</p>
+      <ul>
+        <li *ngFor="let offer of recentOffers; trackBy: trackOffer">
+          <strong>{{ offer.uslugaNaziv || offer.artikal?.naziv || 'Offer' }}</strong>
+          <span>{{ offer.jedinicnaCijena | currency:'EUR':'symbol':'1.0-0' }}</span>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <h2>Latest orders</h2>
+      <p *ngIf="recentOrders.length === 0">No orders yet.</p>
+      <ul>
+        <li *ngFor="let order of recentOrders; trackBy: trackOrder">
+          <strong>Order #{{ order.id }}</strong>
+          <span>{{ order.statusNarudzbeNaziv }}</span>
+          <span>Due {{ order.rokZaIzradu || 'N/A' }}</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+</section>
+
+<ng-template #loadingState>
+  <p>Loading admin dashboard...</p>
+</ng-template>

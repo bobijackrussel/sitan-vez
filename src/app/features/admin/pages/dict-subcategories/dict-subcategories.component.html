@@ -1,0 +1,24 @@
+﻿<section class="admin-dictionary">
+  <header>
+    <h1>Subcategories</h1>
+    <p>Maintain garment subcategories.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>
+      <span>Subcategory name</span>
+      <input formControlName="naziv" placeholder="Subcategory">
+      <app-form-field-error [control]="form.get('naziv')"></app-form-field-error>
+    </label>
+    <button type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Add subcategory' }}</button>
+  </form>
+
+  <div *ngIf="loading">Loading subcategories...</div>
+  <ul *ngIf="!loading && subcategories.length > 0">
+    <li *ngFor="let subcategory of subcategories">
+      {{ subcategory.naziv }}
+      <button type="button" (click)="remove(subcategory)">Remove</button>
+    </li>
+  </ul>
+  <p *ngIf="!loading && subcategories.length === 0">No subcategories recorded.</p>
+</section>

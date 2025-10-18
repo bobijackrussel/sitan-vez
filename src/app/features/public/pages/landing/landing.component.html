@@ -1,0 +1,49 @@
+<section class="hero">
+  <div class="hero-text">
+    <h1>Bespoke garments, handcrafted for every body.</h1>
+    <p>Browse curated offers from master tailors, track your orders, and celebrate finished creations in one place.</p>
+    <div class="hero-ctas">
+      <button type="button" (click)="browseOffers()">Browse Offers</button>
+      <button type="button" class="secondary" (click)="signUpClient()">Sign Up as Client</button>
+      <button type="button" class="secondary" (click)="signUpTailor()">Become a Tailor</button>
+    </div>
+  </div>
+  <div class="hero-showcase" *ngIf="!loadingOffers">
+    <article *ngFor="let offer of heroOffers; trackBy: trackByOffer" class="offer-card" (click)="browseOffers()">
+      <h3>{{ offerTitle(offer) }}</h3>
+      <p *ngIf="offerPrice(offer) as price">Price from {{ price | currency:'EUR':'symbol':'1.0-0' }}</p>
+    </article>
+    <p *ngIf="heroOffers.length === 0">Stay tuned -- new offers are being stitched right now.</p>
+  </div>
+</section>
+
+<section class="value-props">
+  <article>
+    <h2>Personalized Fit</h2>
+    <p>Capture your measurements once, reuse across orders, and track adjustments over time.</p>
+  </article>
+  <article>
+    <h2>Transparent Crafting</h2>
+    <p>Understand fabric choices, craftsmanship quality, and expected delivery timelines up front.</p>
+  </article>
+  <article>
+    <h2>Global Tailors</h2>
+    <p>Discover artisans by service specialty, view operating countries, and collaborate seamlessly.</p>
+  </article>
+</section>
+
+<section class="creations" *ngIf="!loadingCreations">
+  <header>
+    <h2>Fresh off the atelier</h2>
+    <button type="button" (click)="signUpClient()">View more</button>
+  </header>
+  <div class="gallery">
+    <figure *ngFor="let creation of latestCreations">
+      <img [src]="creation.slikaUrl || placeholderImage" alt="Client Creation">
+      <figcaption>Creation #{{ creation.id }}</figcaption>
+    </figure>
+    <p *ngIf="latestCreations.length === 0">Be the first to share your finished piece.</p>
+  </div>
+</section>
+
+<p class="error" *ngIf="error">{{ error }}</p>

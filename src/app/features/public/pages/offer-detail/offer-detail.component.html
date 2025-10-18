@@ -1,0 +1,85 @@
+<section class="offer-detail">
+  <div class="state" *ngIf="loading && !offer">Loading offer...</div>
+  <p class="error" *ngIf="!loading && error">{{ error }}</p>
+
+  <ng-container *ngIf="!loading && offer as current">
+    <div class="offer-detail__layout">
+      <figure class="offer-detail__media">
+        <img [src]="imageUrl" alt="Offer visual">
+        <figcaption>
+          <span class="badge" *ngIf="hasDiscount">Save {{ current.procenatPopusta }}%</span>
+          <span class="badge outline" *ngIf="hasRushFee">Rush +{{ current.procenatZaHitnost }}%</span>
+        </figcaption>
+      </figure>
+
+      <article class="offer-detail__info">
+        <header>
+          <h1>{{ article?.naziv || current.uslugaNaziv }}</h1>
+          <p class="subtitle" *ngIf="article?.materijalNaziv">Crafted in {{ article?.materijalNaziv }} - {{ article?.bojaNaziv || 'custom palette' }}</p>
+        </header>
+
+        <dl class="metrics">
+          <div>
+            <dt>Price</dt>
+            <dd>{{ current.jedinicnaCijena | currency:'EUR':'symbol':'1.0-0' }}</dd>
+          </div>
+          <div>
+            <dt>Tailor</dt>
+            <dd>{{ current.krojacUsername || '-' }}</dd>
+          </div>
+          <div>
+            <dt>Lead time</dt>
+            <dd>{{ leadTime ?? '-' }} days</dd>
+          </div>
+          <div>
+            <dt>Cancellation window</dt>
+            <dd>{{ cancelWindow ?? '-' }} days</dd>
+          </div>
+        </dl>
+
+        <section class="variations" *ngIf="variations">
+          <h2>Available variations</h2>
+          <div class="chips" *ngIf="variations.boje?.length">
+            <h3>Colours</h3>
+            <span class="chip" *ngFor="let color of variations.boje">{{ color }}</span>
+          </div>
+          <div class="chips" *ngIf="variations.materijali?.length">
+            <h3>Materials</h3>
+            <span class="chip" *ngFor="let material of variations.materijali">{{ material }}</span>
+          </div>
+          <div class="chips" *ngIf="variations.velicine?.length">
+            <h3>Sizes</h3>
+            <span class="chip" *ngFor="let size of variations.velicine">{{ size }}</span>
+          </div>
+          <div class="chips" *ngIf="variations.kvalitetiMaterijala?.length">
+            <h3>Material quality</h3>
+            <span class="chip" *ngFor="let quality of variations.kvalitetiMaterijala">{{ quality }}</span>
+          </div>
+        </section>
+
+        <section class="addons" *ngIf="addons.length">
+          <h2>Add-ons</h2>
+          <ul>
+            <li *ngFor="let addon of addons">
+              <strong>{{ addon.naziv }}</strong>
+              <span *ngIf="addon.cijena"> - {{ addon.cijena | currency:'EUR':'symbol':'1.0-0' }}</span>
+              <p *ngIf="addon.opis">{{ addon.opis }}</p>
+            </li>
+          </ul>
+        </section>
+
+        <section class="countries" *ngIf="countries.length">
+          <h2>Available in</h2>
+          <div class="chip-row">
+            <span class="chip" *ngFor="let country of countries">{{ country }}</span>
+          </div>
+        </section>
+
+        <div class="actions">
+          <button type="button" (click)="addToOrder()">Add to order</button>
+          <a routerLink="/public/offers" class="secondary">Back to offers</a>
+        </div>
+      </article>
+    </div>
+  </ng-container>
+</section>

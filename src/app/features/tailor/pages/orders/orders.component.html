@@ -1,0 +1,57 @@
+<section class="tailor-orders">
+  <header>
+    <h1>Orders</h1>
+    <p>Monitor client work queued for your atelier.</p>
+  </header>
+
+  <form [formGroup]="filtersForm" (ngSubmit)="applyFilters()" class="filters">
+    <label>
+      <span>Status</span>
+      <select formControlName="status">
+        <option value="">All statuses</option>
+        <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+      </select>
+    </label>
+    <label>
+      <span>Due from</span>
+      <input type="date" formControlName="from">
+    </label>
+    <label>
+      <span>Due to</span>
+      <input type="date" formControlName="to">
+    </label>
+    <div class="actions">
+      <button type="submit" [disabled]="loading">Apply</button>
+      <button type="button" class="secondary" (click)="resetFilters()" [disabled]="loading">Reset</button>
+    </div>
+  </form>
+
+  <div *ngIf="loading">Loading orders...</div>
+  <table *ngIf="!loading && orders.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Status</th>
+        <th>Client deposit</th>
+        <th>Due date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders; trackBy: trackOrder">
+        <td>{{ order.id }}</td>
+        <td>{{ order.statusNarudzbeNaziv }}</td>
+        <td>{{ order.uplacenAvans ? 'Paid' : 'Pending' }}</td>
+        <td>{{ order.rokZaIzradu || 'N/A' }}</td>
+        <td><a [routerLink]="['/tailor/orders', order.id]">Details</a></td>
+      </tr>
+    </tbody>
+  </table>
+  <p *ngIf="!loading && orders.length === 0">No orders found.</p>
+
+  <nav class="pagination" *ngIf="page.totalPages > 1">
+    <button type="button" (click)="previousPage()" [disabled]="page.number === 0">Previous</button>
+    <span>Page {{ page.number + 1 }} of {{ page.totalPages }}</span>
+    <button type="button" (click)="nextPage()" [disabled]="page.number + 1 >= page.totalPages">Next</button>
+  </nav>
+</section>

@@ -1,0 +1,47 @@
+﻿<section class="admin-dictionary">
+  <header>
+    <h1>Category mapping</h1>
+    <p>Bind subcategories to categories.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>
+      <span>Category</span>
+      <select formControlName="kategorijaNaziv">
+        <option value="">Select category</option>
+        <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+      </select>
+      <app-form-field-error [control]="form.get('kategorijaNaziv')"></app-form-field-error>
+    </label>
+    <label>
+      <span>Subcategory</span>
+      <select formControlName="podkategorijaNaziv">
+        <option value="">Select subcategory</option>
+        <option *ngFor="let subcategory of subcategories" [value]="subcategory">{{ subcategory }}</option>
+      </select>
+      <app-form-field-error [control]="form.get('podkategorijaNaziv')"></app-form-field-error>
+    </label>
+    <button type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Add mapping' }}</button>
+  </form>
+
+  <div *ngIf="loading">Loading mappings...</div>
+  <table *ngIf="!loading && mappings.length > 0">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Subcategory</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let mapping of mappings">
+        <td data-label="Category">{{ mapping.kategorijaNaziv }}</td>
+        <td data-label="Subcategory">{{ mapping.podkategorijaNaziv }}</td>
+        <td data-label="Actions"><button type="button" (click)="remove(mapping)" *ngIf="mapping.id != null">Remove</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <p *ngIf="!loading && mappings.length === 0">No mappings recorded.</p>
+</section>
+
+

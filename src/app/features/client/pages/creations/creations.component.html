@@ -1,0 +1,18 @@
+<section class="creations">
+  <header>
+    <h1>Your creations</h1>
+    <p>View final garments delivered by your tailors.</p>
+  </header>
+
+  <div *ngIf="loading">Loading creations...</div>
+  <p *ngIf="!loading && missingId">We could not match your profile to any creations yet.</p>
+
+  <div class="creations-grid" *ngIf="!loading && creations.length > 0">
+    <figure *ngFor="let creation of creations; trackBy: trackCreation">
+      <img [src]="creation.slikaUrl || placeholderImage" alt="Client creation">
+      <figcaption>Creation #{{ creation.id }} (client {{ creation.klijentId }})</figcaption>
+    </figure>
+  </div>
+
+  <p *ngIf="!loading && creations.length === 0 && !missingId">No creations found. Share your next masterpiece once it is complete.</p>
+</section>

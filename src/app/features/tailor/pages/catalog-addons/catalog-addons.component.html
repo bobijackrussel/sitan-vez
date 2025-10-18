@@ -1,0 +1,54 @@
+<section class="catalog-addons">
+  <header>
+    <h1>Add-ons</h1>
+    <p>Create optional additions for your articles.</p>
+  </header>
+
+  <label>
+    <span>Filter by article</span>
+    <select (change)="filterByArticle($any($event.target).value)">
+      <option value="">All articles</option>
+      <option *ngFor="let article of articles" [value]="article.id">{{ article.naziv }}</option>
+    </select>
+  </label>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>
+      <span>Article</span>
+      <select formControlName="artikalId">
+        <option value="">Select article</option>
+        <option *ngFor="let article of articles" [value]="article.id">{{ article.naziv }}</option>
+      </select>
+      <app-form-field-error [control]="form.get('artikalId')"></app-form-field-error>
+    </label>
+    <label>
+      <span>Name</span>
+      <input formControlName="naziv" placeholder="Extra buttons">
+      <app-form-field-error [control]="form.get('naziv')"></app-form-field-error>
+    </label>
+    <label>
+      <span>Description</span>
+      <textarea formControlName="opis" rows="3"></textarea>
+    </label>
+    <label>
+      <span>Price (€)</span>
+      <input type="number" formControlName="cijena" min="0" step="0.01">
+      <app-form-field-error [control]="form.get('cijena')"></app-form-field-error>
+    </label>
+    <label class="full">
+      <span>Image (base64)</span>
+      <textarea formControlName="slikaBase64" rows="3"></textarea>
+    </label>
+    <button type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Add add-on' }}</button>
+  </form>
+
+  <div *ngIf="loading">Loading add-ons...</div>
+  <ul *ngIf="!loading && addons.length > 0">
+    <li *ngFor="let addon of addons">
+      <strong>{{ addon.naziv }}</strong>
+      <span *ngIf="addon.cijena"> – {{ addon.cijena | currency:'EUR':'symbol':'1.0-0' }}</span>
+      <button type="button" (click)="remove(addon)">Delete</button>
+    </li>
+  </ul>
+  <p *ngIf="!loading && addons.length === 0">No add-ons yet.</p>
+</section>

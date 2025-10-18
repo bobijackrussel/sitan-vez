@@ -1,0 +1,32 @@
+<section class="login">
+  <h1>Welcome back</h1>
+  <p class="intro">Sign in to manage orders, measurements, and tailor collaborations.</p>
+
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      <span>Username</span>
+      <input formControlName="username" placeholder="your.username">
+      <app-form-field-error
+        [control]="form.get('username')"
+        [messages]="{ required: 'Username is required.' }"
+      ></app-form-field-error>
+    </label>
+
+    <label>
+      <span>Password</span>
+      <input type="password" formControlName="password" placeholder="******">
+      <app-form-field-error
+        [control]="form.get('password')"
+        [messages]="{ required: 'Password is required.' }"
+      ></app-form-field-error>
+    </label>
+
+    <div class="actions">
+      <button type="submit" [disabled]="loading">{{ loading ? 'Signing in...' : 'Sign in' }}</button>
+      <a routerLink="/public/register-client" class="secondary">Create client account</a>
+      <a routerLink="/public/register-tailor" class="secondary">Register as tailor</a>
+    </div>
+  </form>
+</section>

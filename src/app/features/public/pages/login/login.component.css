@@ -1,0 +1,87 @@
+:host {
+  display: block;
+}
+
+.login h1 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  margin-bottom: 0.5rem;
+}
+
+.login .intro {
+  color: #4b5563;
+  margin-bottom: 2rem;
+}
+
+form {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 20px 55px rgba(15, 23, 42, 0.14);
+  max-width: 420px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+  color: #1f2937;
+}
+
+input {
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 0.7rem 0.85rem;
+  font: inherit;
+}
+
+input:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 1px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+button[type='submit'] {
+  padding: 0.75rem 1.6rem;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #2563eb, #111827);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button[disabled] {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.actions .secondary {
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  color: #111827;
+  text-decoration: none;
+}
+
+.field-error {
+  color: #dc2626;
+  font-size: 0.75rem;
+}
+
+.error {
+  color: #dc2626;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 640px) {
+  form {
+    width: 100%;
+  }
+}

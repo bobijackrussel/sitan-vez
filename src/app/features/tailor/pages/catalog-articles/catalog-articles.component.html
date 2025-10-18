@@ -1,0 +1,95 @@
+﻿<section class="catalog-articles">
+  <header>
+    <h1>Articles</h1>
+    <p>Create and manage garments available for offers.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <div class="form-grid">
+      <label>
+        <span>Name</span>
+        <input formControlName="naziv" placeholder="Evening gown">
+        <app-form-field-error [control]="form.get('naziv')"></app-form-field-error>
+      </label>
+      <label>
+        <span>Material</span>
+        <select formControlName="materijal">
+          <option value="">Select material</option>
+          <option *ngFor="let material of materials" [value]="material">{{ material }}</option>
+        </select>
+        <app-form-field-error [control]="form.get('materijal')"></app-form-field-error>
+      </label>
+      <label>
+        <span>Color</span>
+        <select formControlName="boja">
+          <option value="">Select color</option>
+          <option *ngFor="let color of colors" [value]="color">{{ color }}</option>
+        </select>
+        <app-form-field-error [control]="form.get('boja')"></app-form-field-error>
+      </label>
+      <label>
+        <span>Size</span>
+        <input formControlName="velicina" placeholder="S/M/L">
+        <app-form-field-error [control]="form.get('velicina')"></app-form-field-error>
+      </label>
+      <label>
+        <span>Quantity</span>
+        <input type="number" formControlName="kolicina" min="0">
+        <app-form-field-error [control]="form.get('kolicina')"></app-form-field-error>
+      </label>
+      <label>
+        <span>Quality</span>
+        <select formControlName="kvalitet">
+          <option value="">Select quality</option>
+          <option *ngFor="let quality of qualities" [value]="quality">{{ quality }}</option>
+        </select>
+        <app-form-field-error [control]="form.get('kvalitet')"></app-form-field-error>
+      </label>
+      <label>
+        <span>Category</span>
+        <select formControlName="category">
+          <option value="">Select category</option>
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </select>
+        <app-form-field-error [control]="form.get('category')"></app-form-field-error>
+      </label>
+      <label>
+        <span>Subcategory (optional)</span>
+        <select formControlName="subcategory">
+          <option value="">Auto</option>
+          <option *ngFor="let subcategory of subcategories" [value]="subcategory">{{ subcategory }}</option>
+        </select>
+      </label>
+      <label class="full">
+        <span>Image (base64)</span>
+        <textarea formControlName="slikaBase64" rows="3" placeholder="Paste a base64 encoded image"></textarea>
+      </label>
+    </div>
+    <button type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Add article' }}</button>
+  </form>
+
+  <div *ngIf="loading">Loading articles...</div>
+  <table *ngIf="!loading && articles.length > 0">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Material</th>
+        <th>Color</th>
+        <th>Size</th>
+        <th>Quantity</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let article of articles">
+        <td>{{ article.naziv }}</td>
+        <td>{{ article.materijalNaziv }}</td>
+        <td>{{ article.bojaNaziv }}</td>
+        <td>{{ article.velicina }}</td>
+        <td>{{ article.kolicina }}</td>
+        <td><button type="button" (click)="remove(article)">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <p *ngIf="!loading && articles.length === 0">No articles created yet.</p>
+</section>

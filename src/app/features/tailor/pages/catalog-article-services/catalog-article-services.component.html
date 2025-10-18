@@ -1,0 +1,45 @@
+﻿<section class="catalog-article-services">
+  <header>
+    <h1>Article-service mapping</h1>
+    <p>Define which services you apply to specific garments.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>
+      <span>Article</span>
+      <select formControlName="artikalId">
+        <option value="">Select article</option>
+        <option *ngFor="let article of articles" [value]="article.id">{{ article.naziv }}</option>
+      </select>
+      <app-form-field-error [control]="form.get('artikalId')"></app-form-field-error>
+    </label>
+    <label>
+      <span>Service</span>
+      <select formControlName="uslugaNaziv">
+        <option value="">Select service</option>
+        <option *ngFor="let service of services" [value]="service.naziv">{{ service.naziv }}</option>
+      </select>
+      <app-form-field-error [control]="form.get('uslugaNaziv')"></app-form-field-error>
+    </label>
+    <button type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Add mapping' }}</button>
+  </form>
+
+  <div *ngIf="loading">Loading mappings...</div>
+  <table *ngIf="!loading && mappings.length > 0">
+    <thead>
+      <tr>
+        <th>Article</th>
+        <th>Service</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let mapping of mappings">
+        <td>{{ articleName(mapping.artikalId) }}</td>
+        <td>{{ serviceLabel(mapping.uslugaNaziv) }}</td>
+        <td><button type="button" (click)="remove(mapping)">Remove</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <p *ngIf="!loading && mappings.length === 0">No mappings defined.</p>
+</section>

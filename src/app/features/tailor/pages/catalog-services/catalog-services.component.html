@@ -1,0 +1,29 @@
+<section class="catalog-services">
+  <header>
+    <h1>Services catalog</h1>
+    <p>Maintain the list of services you provide.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>
+      <span>Service name</span>
+      <input formControlName="naziv" placeholder="Custom tailoring">
+      <app-form-field-error [control]="form.get('naziv')"></app-form-field-error>
+    </label>
+    <label>
+      <span>Description</span>
+      <textarea formControlName="opis" rows="3" placeholder="Optional description"></textarea>
+    </label>
+    <button type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Add service' }}</button>
+  </form>
+
+  <div *ngIf="loading">Loading services...</div>
+  <ul *ngIf="!loading && services.length > 0">
+    <li *ngFor="let service of services">
+      <strong>{{ service.naziv }}</strong>
+      <span *ngIf="service.opis"> - {{ service.opis }}</span>
+      <button type="button" (click)="remove(service)">Remove</button>
+    </li>
+  </ul>
+  <p *ngIf="!loading && services.length === 0">No services recorded yet.</p>
+</section>

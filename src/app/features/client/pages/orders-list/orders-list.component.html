@@ -1,0 +1,61 @@
+<section class="orders-list">
+  <header>
+    <h1>My orders</h1>
+    <p>Track progress, deadlines, and deposits for each order.</p>
+  </header>
+
+  <form [formGroup]="filtersForm" (ngSubmit)="applyFilters()" class="filters">
+    <label>
+      <span>Status</span>
+      <select formControlName="status">
+        <option value="">All statuses</option>
+        <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+      </select>
+    </label>
+    <label>
+      <span>Due from</span>
+      <input type="date" formControlName="from">
+    </label>
+    <label>
+      <span>Due to</span>
+      <input type="date" formControlName="to">
+    </label>
+    <div class="filter-actions">
+      <button type="submit" [disabled]="loading">Apply</button>
+      <button type="button" class="secondary" (click)="resetFilters()" [disabled]="loading">Reset</button>
+    </div>
+  </form>
+
+  <div *ngIf="loading">Loading orders...</div>
+
+  <table *ngIf="!loading && orders.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Status</th>
+        <th>Due date</th>
+        <th>Cancellation deadline</th>
+        <th>Deposit</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders; trackBy: trackOrder">
+        <td>{{ order.id }}</td>
+        <td>{{ order.statusNarudzbeNaziv }}</td>
+        <td>{{ order.rokZaIzradu || 'N/A' }}</td>
+        <td>{{ order.rokZaOtkazivanje || 'N/A' }}</td>
+        <td>{{ order.uplacenAvans ? 'Paid' : 'Pending' }}</td>
+        <td><button type="button" (click)="openOrder(order)">Details</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="!loading && orders.length === 0">No orders found.</p>
+
+  <nav class="pagination" *ngIf="page.totalPages > 1">
+    <button type="button" (click)="previousPage()" [disabled]="page.number === 0">Previous</button>
+    <span>Page {{ page.number + 1 }} of {{ page.totalPages }}</span>
+    <button type="button" (click)="nextPage()" [disabled]="page.number + 1 >= page.totalPages">Next</button>
+  </nav>
+</section>

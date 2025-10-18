@@ -1,0 +1,67 @@
+<section class="tailor-dashboard" *ngIf="!loading; else loadingState">
+  <header>
+    <h1>Tailor dashboard</h1>
+    <p>Monitor orders, items, and offers at a glance.</p>
+  </header>
+
+  <section class="metrics">
+    <article *ngFor="let metric of metrics">
+      <h2>{{ metric.label }}</h2>
+      <p class="value">{{ metric.value }}</p>
+      <small *ngIf="metric.hint">{{ metric.hint }}</small>
+    </article>
+  </section>
+
+  <section class="panels">
+    <div class="panel">
+      <h2>Recent orders</h2>
+      <p *ngIf="recentOrders.length === 0">No orders yet.</p>
+      <ul>
+        <li *ngFor="let order of recentOrders; trackBy: trackOrder">
+          <strong>#{{ order.id }}</strong>
+          <span>{{ order.statusNarudzbeNaziv }}</span>
+          <span>Due {{ order.rokZaIzradu || 'N/A' }}</span>
+          <button type="button" (click)="goto('/tailor/orders/' + order.id)">Open</button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>Active items</h2>
+      <p *ngIf="recentItems.length === 0">No active line items.</p>
+      <ul>
+        <li *ngFor="let item of recentItems; trackBy: trackItem">
+          <strong>Item #{{ item.id }}</strong>
+          <span>{{ item.statusStavkeNaziv }}</span>
+          <span>{{ item.kolicina }} pcs</span>
+          <button type="button" (click)="goto('/tailor/orders/' + item.narudzbaId)">Order</button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>Offers</h2>
+      <p *ngIf="offers.length === 0">No offers published.</p>
+      <ul>
+        <li *ngFor="let offer of offers; trackBy: trackOffer">
+          <strong>{{ offer.uslugaNaziv || offer.artikal?.naziv || 'Offer' }}</strong>
+          <span>{{ offer.jedinicnaCijena | currency:'EUR':'symbol':'1.0-0' }}</span>
+          <button type="button" (click)="goto('/tailor/offers')">Manage</button>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="shortcuts">
+    <h2>Quick actions</h2>
+    <div class="buttons">
+      <button type="button" (click)="goto('/tailor/offers')">Create offer</button>
+      <button type="button" (click)="goto('/tailor/catalog/articles')">Add article</button>
+      <button type="button" (click)="goto('/tailor/orders')">View all orders</button>
+    </div>
+  </section>
+</section>
+
+<ng-template #loadingState>
+  <p>Loading tailor dashboard...</p>
+</ng-template>

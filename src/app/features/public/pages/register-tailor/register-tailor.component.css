@@ -1,0 +1,114 @@
+:host {
+  display: block;
+}
+
+.register h1 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  margin-bottom: 0.5rem;
+}
+
+.register .intro {
+  color: #4b5563;
+  margin-bottom: 2rem;
+}
+
+.register form {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 2.25rem;
+  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.16);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: #111827;
+}
+
+label span {
+  font-weight: 600;
+}
+
+input,
+textarea,
+select {
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 0.65rem 0.85rem;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 1px;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+
+button[type='submit'] {
+  padding: 0.85rem 1.9rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(120deg, #111827, #2563eb);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.actions .secondary {
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  color: #111827;
+  text-decoration: none;
+}
+
+.field-error {
+  color: #dc2626;
+  font-size: 0.75rem;
+}
+
+.success {
+  margin-bottom: 1rem;
+  color: #15803d;
+  font-weight: 600;
+}
+
+.error {
+  margin-bottom: 1rem;
+  color: #dc2626;
+}
+
+@media (max-width: 640px) {
+  .register form {
+    padding: 1.5rem;
+  }
+}

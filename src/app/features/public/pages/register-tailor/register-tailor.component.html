@@ -1,0 +1,107 @@
+<section class="register">
+  <h1>Become a Sewit tailor</h1>
+  <p class="intro">Showcase your artistry, publish offers, and manage client orders with tailored workflows.</p>
+
+  <p class="success" *ngIf="success">Your account request has been submitted! Our team will notify you once it is approved.</p>
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="grid">
+      <label>
+        <span>First name</span>
+        <input formControlName="ime" placeholder="Marko">
+        <app-form-field-error
+          [control]="control('ime')"
+          [messages]="{ required: 'Required.' }"
+        ></app-form-field-error>
+      </label>
+      <label>
+        <span>Last name</span>
+        <input formControlName="prezime" placeholder="Juric">
+        <app-form-field-error
+          [control]="control('prezime')"
+          [messages]="{ required: 'Required.' }"
+        ></app-form-field-error>
+      </label>
+      <label>
+        <span>Email</span>
+        <input formControlName="email" type="email" placeholder="tailor@example.com">
+        <app-form-field-error
+          [control]="control('email')"
+          [messages]="{
+            required: 'Email is required.',
+            email: 'Enter a valid email.'
+          }"
+        ></app-form-field-error>
+      </label>
+      <label>
+        <span>Username</span>
+        <input formControlName="korisnickoIme" placeholder="atelier.marko">
+        <app-form-field-error
+          [control]="control('korisnickoIme')"
+          [messages]="{
+            required: 'Required.',
+            minlength: 'Use at least 4 characters.'
+          }"
+        ></app-form-field-error>
+      </label>
+      <label>
+        <span>Password</span>
+        <input formControlName="lozinka" type="password" placeholder="******">
+        <app-form-field-error
+          [control]="control('lozinka')"
+          [messages]="{
+            required: 'Required.',
+            minlength: 'Use at least 6 characters.'
+          }"
+        ></app-form-field-error>
+      </label>
+      <label>
+        <span>Studio address</span>
+        <textarea formControlName="adresa" rows="3" placeholder="Street, number, city"></textarea>
+        <app-form-field-error
+          [control]="control('adresa')"
+          [messages]="{ required: 'Required.' }"
+        ></app-form-field-error>
+      </label>
+      <label>
+        <span>Primary country</span>
+        <select formControlName="drzavaNaziv">
+          <option value="">Select a country</option>
+          <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+        </select>
+        <app-form-field-error
+          [control]="control('drzavaNaziv')"
+          [messages]="{ required: 'Select at least one.' }"
+        ></app-form-field-error>
+      </label>
+      <label class="full">
+        <span>About your craftsmanship</span>
+        <textarea formControlName="opis" rows="4" placeholder="Tell us about your atelier, specialties, and experience"></textarea>
+        <app-form-field-error
+          [control]="control('opis')"
+          [messages]="{
+            required: 'Tell clients what to expect.',
+            minlength: 'Provide at least 20 characters.'
+          }"
+        ></app-form-field-error>
+      </label>
+      <label class="full">
+        <span>Terms of service</span>
+        <textarea formControlName="usloviPoslovanja" rows="4" placeholder="Outline payment terms, revisions, delivery timelines, etc."></textarea>
+        <app-form-field-error
+          [control]="control('usloviPoslovanja')"
+          [messages]="{
+            required: 'Required.',
+            minlength: 'Provide at least 20 characters.'
+          }"
+        ></app-form-field-error>
+      </label>
+    </div>
+
+    <div class="actions">
+      <button type="submit" [disabled]="loading || success">Submit application</button>
+      <a routerLink="/public/login" class="secondary">Back to sign in</a>
+    </div>
+  </form>
+</section>

@@ -1,0 +1,26 @@
+﻿<section class="admin-dictionary">
+  <header>
+    <h1>Qualities</h1>
+    <p>Maintain material quality dictionary.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>
+      <span>Quality name</span>
+      <input formControlName="naziv" placeholder="Quality">
+      <app-form-field-error [control]="form.get('naziv')"></app-form-field-error>
+    </label>
+    <button type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Add quality' }}</button>
+  </form>
+
+  <div *ngIf="loading">Loading qualities...</div>
+  <ul *ngIf="!loading && qualities.length > 0">
+    <li *ngFor="let quality of qualities">
+      {{ quality.naziv }}
+      <button type="button" (click)="remove(quality)">Remove</button>
+    </li>
+  </ul>
+  <p *ngIf="!loading && qualities.length === 0">No qualities recorded.</p>
+</section>
+
+

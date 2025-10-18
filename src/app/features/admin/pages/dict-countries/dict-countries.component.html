@@ -1,0 +1,24 @@
+<section class="admin-dictionary">
+  <header>
+    <h1>Countries</h1>
+    <p>Maintain the master list of countries.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>
+      <span>Country name</span>
+      <input formControlName="naziv" placeholder="Country">
+      <app-form-field-error [control]="form.get('naziv')"></app-form-field-error>
+    </label>
+    <button type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Add country' }}</button>
+  </form>
+
+  <div *ngIf="loading">Loading countries...</div>
+  <ul *ngIf="!loading && countries.length > 0">
+    <li *ngFor="let country of countries">
+      {{ country.naziv }}
+      <button type="button" (click)="remove(country)">Remove</button>
+    </li>
+  </ul>
+  <p *ngIf="!loading && countries.length === 0">No countries recorded.</p>
+</section>

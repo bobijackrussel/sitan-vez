@@ -1,0 +1,96 @@
+<section class="order-detail" *ngIf="order as summary; else loadingState">
+  <header>
+    <h1>Order #{{ summary.id }}</h1>
+    <p>Status: <strong>{{ summary.statusNarudzbeNaziv }}</strong></p>
+    <div class="actions">
+      <label>
+        <span>Change status</span>
+        <select #orderStatus>
+          <option value="">Select status</option>
+          <option *ngFor="let status of orderStatuses" [value]="status" [selected]="status === summary.statusNarudzbeNaziv">
+            {{ status }}
+          </option>
+        </select>
+      </label>
+      <button type="button" (click)="updateOrderStatus(orderStatus.value)" [disabled]="updatingOrder || !orderStatus.value">Update status</button>
+      <button type="button" (click)="toggleOrderDeposit()" [disabled]="updatingOrder">
+        {{ summary.uplacenAvans ? 'Mark deposit pending' : 'Mark deposit paid' }}
+      </button>
+      <button type="button" class="secondary" (click)="refresh()" [disabled]="loading">Refresh</button>
+    </div>
+    <dl class="summary">
+      <div>
+        <dt>Created</dt>
+        <dd>{{ summary.datum || 'N/A' }}</dd>
+      </div>
+      <div>
+        <dt>Due</dt>
+        <dd>{{ summary.rokZaIzradu || 'N/A' }}</dd>
+      </div>
+      <div>
+        <dt>Cancellation deadline</dt>
+        <dd>{{ summary.rokZaOtkazivanje || 'N/A' }}</dd>
+      </div>
+      <div>
+        <dt>Deposit</dt>
+        <dd>{{ summary.uplacenAvans ? 'Paid' : 'Pending' }}</dd>
+      </div>
+    </dl>
+  </header>
+
+  <section class="items">
+    <h2>Line items</h2>
+    <p *ngIf="items.length === 0">No items added yet.</p>
+    <article *ngFor="let item of items; trackBy: trackItem" class="item">
+      <header>
+        <h3>Item #{{ item.id }}</h3>
+        <p>Status: {{ item.statusStavkeNaziv }}</p>
+      </header>
+      <dl>
+        <div>
+          <dt>Quantity</dt>
+          <dd>{{ item.kolicina }}</dd>
+        </div>
+        <div>
+          <dt>Price</dt>
+          <dd>{{ item.cijena | currency:'EUR':'symbol':'1.0-0' }}</dd>
+        </div>
+        <div>
+          <dt>Deposit</dt>
+          <dd>{{ item.uplacenAvans ? 'Paid' : 'Pending' }}</dd>
+        </div>
+        <div>
+          <dt>Due date</dt>
+          <dd>{{ item.rokZaIzradu || 'N/A' }}</dd>
+        </div>
+      </dl>
+      <section *ngIf="item.dodaci?.length">
+        <h4>Add-ons</h4>
+        <ul>
+          <li *ngFor="let addon of item.dodaci">{{ addon.naziv }} ({{ addon.cijena | currency:'EUR':'symbol':'1.0-0' }})</li>
+        </ul>
+      </section>
+      <div class="item-actions">
+        <label>
+          <span>Change status</span>
+          <select #itemStatus>
+            <option value="">Select status</option>
+            <option *ngFor="let status of itemStatuses" [value]="status" [selected]="status === item.statusStavkeNaziv">{{ status }}</option>
+          </select>
+        </label>
+        <button type="button" (click)="updateItemStatus(item, itemStatus.value)" [disabled]="itemLoading[item.id] || !itemStatus.value">Update status</button>
+        <button type="button" (click)="toggleItemDeposit(item)" [disabled]="itemLoading[item.id]">
+          {{ item.uplacenAvans ? 'Mark deposit pending' : 'Mark deposit paid' }}
+        </button>
+      </div>
+    </article>
+  </section>
+</section>
+
+<ng-template #loadingState>
+  <div *ngIf="loading; else notFound">Loading order...</div>
+</ng-template>
+
+<ng-template #notFound>
+  <p>Order data is unavailable.</p>
+</ng-template>

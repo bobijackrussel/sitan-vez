@@ -1,0 +1,72 @@
+﻿<section class="admin-clients">
+  <header>
+    <h1>Clients</h1>
+    <p>Search, register, or remove client accounts.</p>
+  </header>
+
+  <form [formGroup]="searchForm" (ngSubmit)="search()" class="search">
+    <input formControlName="search" placeholder="Search clients">
+    <button type="submit" [disabled]="loading">Search</button>
+    <button type="button" class="secondary" (click)="resetSearch()" [disabled]="loading">Reset</button>
+  </form>
+
+  <form [formGroup]="createForm" (ngSubmit)="save()" class="create">
+    <h2>Register new client</h2>
+    <div class="grid">
+      <label>
+        <span>First name</span>
+        <input formControlName="ime">
+        <app-form-field-error [control]="createForm.get('ime')"></app-form-field-error>
+      </label>
+      <label>
+        <span>Last name</span>
+        <input formControlName="prezime">
+        <app-form-field-error [control]="createForm.get('prezime')"></app-form-field-error>
+      </label>
+      <label>
+        <span>Email</span>
+        <input formControlName="email" type="email">
+        <app-form-field-error [control]="createForm.get('email')"></app-form-field-error>
+      </label>
+      <label>
+        <span>Username</span>
+        <input formControlName="korisnickoIme">
+        <app-form-field-error [control]="createForm.get('korisnickoIme')"></app-form-field-error>
+      </label>
+      <label>
+        <span>Password</span>
+        <input formControlName="lozinka" type="password">
+        <app-form-field-error [control]="createForm.get('lozinka')"></app-form-field-error>
+      </label>
+      <label class="address">
+        <span>Address</span>
+        <textarea formControlName="adresa" rows="2"></textarea>
+        <app-form-field-error [control]="createForm.get('adresa')"></app-form-field-error>
+      </label>
+    </div>
+    <button type="submit" [disabled]="creating">{{ creating ? 'Creating...' : 'Create client' }}</button>
+  </form>
+
+  <div *ngIf="loading">Loading clients...</div>
+  <table *ngIf="!loading && clients.length > 0">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Address</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let client of clients">
+        <td data-label="Username">{{ client.korisnickoIme }}</td>
+        <td data-label="Name">{{ client.ime }} {{ client.prezime }}</td>
+        <td data-label="Email">{{ client.email }}</td>
+        <td data-label="Address">{{ client.adresa }}</td>
+        <td data-label="Actions"><button type="button" (click)="remove(client)">Remove</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <p *ngIf="!loading && clients.length === 0">No clients found.</p>
+</section>

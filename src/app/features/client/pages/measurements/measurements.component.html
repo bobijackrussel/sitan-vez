@@ -1,0 +1,114 @@
+<section class="measurements">
+  <header>
+    <h1>Measurements</h1>
+    <p>Maintain accurate measurements to reuse across new orders.</p>
+  </header>
+
+  <section class="form-section">
+    <h2>{{ editingId ? 'Edit snapshot' : 'Add new snapshot' }}</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-grid">
+        <label>
+          <span>Chest (cm)</span>
+          <input type="number" formControlName="obimGrudi" min="0">
+          <app-form-field-error [control]="form.get('obimGrudi')"></app-form-field-error>
+        </label>
+        <label>
+          <span>Waist (cm)</span>
+          <input type="number" formControlName="obimStruka" min="0">
+          <app-form-field-error [control]="form.get('obimStruka')"></app-form-field-error>
+        </label>
+        <label>
+          <span>Hips (cm)</span>
+          <input type="number" formControlName="obimBokova" min="0">
+          <app-form-field-error [control]="form.get('obimBokova')"></app-form-field-error>
+        </label>
+        <label>
+          <span>Seat (cm)</span>
+          <input type="number" formControlName="obimKukova" min="0">
+          <app-form-field-error [control]="form.get('obimKukova')"></app-form-field-error>
+        </label>
+        <label>
+          <span>Shoulders (cm)</span>
+          <input type="number" formControlName="sirinaRamena" min="0">
+          <app-form-field-error [control]="form.get('sirinaRamena')"></app-form-field-error>
+        </label>
+        <label>
+          <span>Length (cm)</span>
+          <input type="number" formControlName="duzina" min="0">
+          <app-form-field-error [control]="form.get('duzina')"></app-form-field-error>
+        </label>
+      </div>
+      <div class="form-actions">
+        <button type="submit" [disabled]="saving">{{ saving ? 'Saving...' : editingId ? 'Save changes' : 'Save snapshot' }}</button>
+        <button type="button" class="secondary" (click)="startCreate()" [disabled]="saving">Reset</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="latest" *ngIf="latest as snapshot">
+    <h2>Latest snapshot</h2>
+    <dl>
+      <div>
+        <dt>Date</dt>
+        <dd>{{ snapshot.datum || 'N/A' }}</dd>
+      </div>
+      <div>
+        <dt>Chest</dt>
+        <dd>{{ snapshot.obimGrudi }} cm</dd>
+      </div>
+      <div>
+        <dt>Waist</dt>
+        <dd>{{ snapshot.obimStruka }} cm</dd>
+      </div>
+      <div>
+        <dt>Hips</dt>
+        <dd>{{ snapshot.obimBokova }} cm</dd>
+      </div>
+      <div>
+        <dt>Seat</dt>
+        <dd>{{ snapshot.obimKukova }} cm</dd>
+      </div>
+      <div>
+        <dt>Shoulders</dt>
+        <dd>{{ snapshot.sirinaRamena }} cm</dd>
+      </div>
+      <div>
+        <dt>Length</dt>
+        <dd>{{ snapshot.duzina }} cm</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="history">
+    <h2>All snapshots</h2>
+    <div *ngIf="loadingList">Loading measurements...</div>
+    <table *ngIf="!loadingList && measurements.length > 0">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Chest</th>
+          <th>Waist</th>
+          <th>Hips</th>
+          <th>Seat</th>
+          <th>Shoulders</th>
+          <th>Length</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let measurement of measurements; trackBy: trackMeasurement">
+          <td>{{ measurement.datum || 'N/A' }}</td>
+          <td>{{ measurement.obimGrudi }} cm</td>
+          <td>{{ measurement.obimStruka }} cm</td>
+          <td>{{ measurement.obimBokova }} cm</td>
+          <td>{{ measurement.obimKukova }} cm</td>
+          <td>{{ measurement.sirinaRamena }} cm</td>
+          <td>{{ measurement.duzina }} cm</td>
+          <td><button type="button" (click)="startEdit(measurement)">Edit</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="!loadingList && measurements.length === 0">No measurements recorded yet.</p>
+  </section>
+</section>

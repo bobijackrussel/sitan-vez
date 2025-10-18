@@ -1,0 +1,25 @@
+<section class="order-new">
+  <header>
+    <h1>Start a new order</h1>
+    <p>Select your tailor and provide optional notes to kick things off.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      <span>Tailor username</span>
+      <input formControlName="krojacUsername" list="tailors" placeholder="tailor.username">
+      <datalist id="tailors">
+        <option *ngFor="let tailor of tailors" [value]="tailor"></option>
+      </datalist>
+      <app-form-field-error [control]="form.get('krojacUsername')"></app-form-field-error>
+      <small *ngIf="loadingTailors">Loading suggested tailors...</small>
+    </label>
+
+    <label>
+      <span>Notes for the tailor</span>
+      <textarea formControlName="napomena" rows="4" placeholder="Share measurements specifics, deadlines, or inspirations."></textarea>
+    </label>
+
+    <button type="submit" [disabled]="creating">{{ creating ? 'Creating...' : 'Create order' }}</button>
+  </form>
+</section>

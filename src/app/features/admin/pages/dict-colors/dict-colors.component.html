@@ -1,0 +1,24 @@
+<section class="admin-dictionary">
+  <header>
+    <h1>Colors</h1>
+    <p>Maintain color dictionary.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>
+      <span>Color name</span>
+      <input formControlName="naziv" placeholder="Color">
+      <app-form-field-error [control]="form.get('naziv')"></app-form-field-error>
+    </label>
+    <button type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Add color' }}</button>
+  </form>
+
+  <div *ngIf="loading">Loading colors...</div>
+  <ul *ngIf="!loading && colors.length > 0">
+    <li *ngFor="let color of colors">
+      {{ color.naziv }}
+      <button type="button" (click)="remove(color)">Remove</button>
+    </li>
+  </ul>
+  <p *ngIf="!loading && colors.length === 0">No colors recorded.</p>
+</section>

@@ -1,0 +1,43 @@
+<header class="app-header">
+  <div class="brand">
+    <a routerLink="/public">SewIt</a>
+  </div>
+
+  <nav class="primary-nav">
+    <a
+      *ngFor="let link of primaryLinks; trackBy: trackLink"
+      [routerLink]="link.route"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: link.route === '/public' }"
+    >
+      {{ link.label }}
+    </a>
+  </nav>
+
+  <div class="header-spacer"></div>
+
+  <ng-container *ngIf="authState$ | async as auth">
+    <ng-container *ngIf="auth.isAuthenticated; else guestNav">
+      <a
+        class="area-link"
+        [routerLink]="areaLink(auth.role)"
+        routerLinkActive="active"
+      >
+        {{ roleLabel(auth.role) }} area
+      </a>
+      <span class="username" *ngIf="auth.username">({{ auth.username }})</span>
+      <button type="button" class="logout-btn" (click)="logout()">Logout</button>
+    </ng-container>
+    <ng-template #guestNav>
+      <a routerLink="/public/login" routerLinkActive="active">Login</a>
+      <a routerLink="/public/register-client" routerLinkActive="active">Register as Client</a>
+      <a routerLink="/public/register-tailor" routerLinkActive="active">Register as Tailor</a>
+    </ng-template>
+  </ng-container>
+</header>
+
+<main class="app-content">
+  <router-outlet></router-outlet>
+</main>
+
+<app-toast-container></app-toast-container>

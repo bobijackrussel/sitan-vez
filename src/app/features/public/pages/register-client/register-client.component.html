@@ -1,0 +1,74 @@
+<section class="register">
+  <h1>Create client account</h1>
+  <p class="intro">Track measurements, place orders, and collaborate with tailors worldwide.</p>
+
+  <p class="success" *ngIf="success">Account created! You can now sign in and start exploring offers.</p>
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="grid">
+      <label>
+        <span>First name</span>
+        <input formControlName="ime" placeholder="Ana">
+        <app-form-field-error
+          [control]="control('ime')"
+          [messages]="{ required: 'First name is required.' }"
+        ></app-form-field-error>
+      </label>
+      <label>
+        <span>Last name</span>
+        <input formControlName="prezime" placeholder="Horvat">
+        <app-form-field-error
+          [control]="control('prezime')"
+          [messages]="{ required: 'Last name is required.' }"
+        ></app-form-field-error>
+      </label>
+      <label>
+        <span>Email</span>
+        <input formControlName="email" type="email" placeholder="ana@example.com">
+        <app-form-field-error
+          [control]="control('email')"
+          [messages]="{
+            required: 'Email is required.',
+            email: 'Enter a valid email.'
+          }"
+        ></app-form-field-error>
+      </label>
+      <label>
+        <span>Username</span>
+        <input formControlName="korisnickoIme" placeholder="ana.tailor">
+        <app-form-field-error
+          [control]="control('korisnickoIme')"
+          [messages]="{
+            required: 'Username is required.',
+            minlength: 'Use at least 4 characters.'
+          }"
+        ></app-form-field-error>
+      </label>
+      <label>
+        <span>Password</span>
+        <input formControlName="lozinka" type="password" placeholder="******">
+        <app-form-field-error
+          [control]="control('lozinka')"
+          [messages]="{
+            required: 'Password is required.',
+            minlength: 'Use at least 6 characters.'
+          }"
+        ></app-form-field-error>
+      </label>
+      <label class="address">
+        <span>Primary address</span>
+        <textarea formControlName="adresa" rows="3" placeholder="Street, number, city"></textarea>
+        <app-form-field-error
+          [control]="control('adresa')"
+          [messages]="{ required: 'Address is required.' }"
+        ></app-form-field-error>
+      </label>
+    </div>
+
+    <div class="actions">
+      <button type="submit" [disabled]="loading || success">Create account</button>
+      <a routerLink="/public/login" class="secondary">Already registered? Sign in</a>
+    </div>
+  </form>
+</section>

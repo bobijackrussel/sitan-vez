@@ -1,0 +1,146 @@
+:host {
+  display: block;
+}
+
+.admin-dictionary {
+  max-width: 780px;
+  margin: 0 auto 3rem;
+  padding: 1.75rem clamp(1.25rem, 3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
+}
+
+.admin-dictionary header h1 {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.4rem, 2vw, 1.9rem);
+  font-weight: 600;
+}
+
+.admin-dictionary header p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.admin-dictionary form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-dictionary label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-weight: 500;
+}
+
+.admin-dictionary input,
+.admin-dictionary select,
+.admin-dictionary textarea {
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  padding: 0.6rem 0.8rem;
+  font: inherit;
+}
+
+.admin-dictionary button {
+  align-self: flex-start;
+  padding: 0.55rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-dictionary ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-dictionary li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+}
+
+.admin-dictionary li button,
+.admin-dictionary table button {
+  background: #ef4444;
+  padding: 0.45rem 0.9rem;
+}
+
+.admin-dictionary table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.admin-dictionary thead {
+  background: #f3f4f6;
+}
+
+.admin-dictionary th,
+.admin-dictionary td {
+  text-align: left;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-dictionary tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 640px) {
+  .admin-dictionary {
+    margin-inline: 1rem;
+    padding-inline: 1.25rem;
+  }
+
+  .admin-dictionary table,
+  .admin-dictionary thead,
+  .admin-dictionary tbody,
+  .admin-dictionary th,
+  .admin-dictionary td,
+  .admin-dictionary tr {
+    display: block;
+    width: 100%;
+  }
+
+  .admin-dictionary thead {
+    display: none;
+  }
+
+  .admin-dictionary td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .admin-dictionary td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #4b5563;
+  }
+}
